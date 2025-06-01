@@ -1,14 +1,19 @@
 import { Image, Pressable, ScrollView, StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 import { AppText, AppTextBold } from "../components/AppText";
 import { AppStrings } from "../../constants/AppStrings";
-import { appStyles } from "../styles/AppStyles";
+import { appStyles, styleSet } from "../styles/AppStyles";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { setUnit } from "../../redux/slice/dashboardSlice";
+import { useDispatch, useSelector } from "react-redux";
+import App from "../../../App";
+import { RootState } from "../../redux/store";
 
 const Settings = () => {
     const insets = useSafeAreaInsets();
     const navigation = useNavigation<any>();
+    const dispatch = useDispatch();
     const categories = [
         "Technology",
         "Entertainment",
@@ -17,7 +22,13 @@ const Settings = () => {
         "Business",
     ];
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const unit = useSelector((state: RootState) => state.dashboard.unit);
+    const isEnabled = unit === 'Celsius';
 
+    const toggleSwitch = () => {
+        const newUnit = isEnabled ? 'Fahrenheit' : 'Celsius';
+        dispatch(setUnit(newUnit));
+    };
     const toggleCategory = (category: string) => {
         if (selectedCategories.includes(category)) {
             setSelectedCategories((prev: any[]) => prev.filter(cat => cat !== category));
@@ -25,10 +36,14 @@ const Settings = () => {
             setSelectedCategories((prev: any) => [...prev, category]);
         }
     };
-    const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const [isEnableds, setIsEnabled] = useState(false);
+    const toggleSwitchs = () => {
+        setIsEnabled(previousState => !previousState);
+
+        setUnit('faren')
+    }
     return (
-        <View style={[appStyles.appView, { paddingTop: insets.top, backgroundColor: '#EFEFFF' }]}>
+        <View style={[appStyles.sreenView, { paddingTop: insets.top, backgroundColor: 'white' }]}>
             <View style={styleSet.rowStyles}>
                 <Pressable onPress={() => navigation.pop()}>
                     <Image style={styleSet.iconStyles} source={require('../../assets/images/back.png')} />
@@ -39,10 +54,10 @@ const Settings = () => {
             <View style={{ paddingHorizontal: 25, paddingVertical: 15 }}>
                 <AppTextBold text={AppStrings.pref} styles={styleSet.sectionTitle} />
                 <View style={styleSet.prefStyles}>
-                    <AppText text={AppStrings.celcius} />
+                    <AppText text={isEnabled ? AppStrings.celcius : AppStrings.farenhiet} />
                     <Switch
                         trackColor={{ false: '#767577', true: '#81b0ff' }}
-                        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                        thumbColor={isEnabled ? '#0808F7' : '#f4f3f4'}
                         ios_backgroundColor="#3e3e3e"
                         onValueChange={toggleSwitch}
                         value={isEnabled}
@@ -53,7 +68,7 @@ const Settings = () => {
                 <ScrollView style={styleSet.content}>
                     <View>
                         <AppTextBold text={AppStrings.newsCat} styles={styleSet.sectionTitle} />
-                        <View style={{ backgroundColor: 'white', padding: 15, borderRadius: 10, }}>
+                        <View style={{ backgroundColor: '#EDFBFF', padding: 15, borderRadius: 10, }}>
                             {categories.map((cat, index) => {
                                 const isSelected = selectedCategories.includes(cat);
                                 return (
@@ -62,14 +77,14 @@ const Settings = () => {
                                         onPress={() => toggleCategory(cat)}
                                         style={[
                                             styleSet.categoryRow,
-                                            isSelected && { backgroundColor: '#D0E8FF' },
+                                            isSelected && { backgroundColor: '#C1DFFF' },
                                         ]}
                                     >
                                         <AppText text={cat} />
                                         <Image
                                             style={[
                                                 styleSet.checkStyles,
-                                                { tintColor: isSelected ? '#5724D0' : '#999' }
+                                                { tintColor: isSelected ? '#0808F7' : '#999' }
                                             ]}
                                             source={require('../../assets/images/check.png')}
                                         />
@@ -84,46 +99,5 @@ const Settings = () => {
         </View>
     );
 }
-const styleSet = StyleSheet.create({
-    rowStyles: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        padding: 15,
-    },
-    prefStyles: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexDirection: 'row',
-        padding: 20,
-        backgroundColor: 'white',
-        borderRadius: 10,
-    },
-    iconStyles: {
-        height: 20,
-        width: 20,
-        resizeMode: 'contain',
-    },
-    checkStyles: {
-        height: 40,
-        width: 40,
-        resizeMode: 'contain',
-    },
-    content: {
-        paddingHorizontal: 25,
-        paddingVertical: 5
-    },
-    sectionTitle: {
-        marginBottom: 10,
-    },
-    categoryRow: {
-        backgroundColor: '#E5E5E5',
-        borderRadius: 8,
-        padding: 15,
-        marginVertical: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-})
+
 export default Settings;

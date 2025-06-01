@@ -7,6 +7,7 @@ interface dashboardState {
     weather: weatherData | null;
     articles: newsData[];
     forecast: forecastData[];
+    unit: String,
 }
 
 const initialState: dashboardState = {
@@ -15,6 +16,7 @@ const initialState: dashboardState = {
     weather: null,
     articles: [],
     forecast: [],
+    unit: "Celsius",
 };
 
 const dashboardSlice = createSlice({
@@ -36,7 +38,10 @@ const dashboardSlice = createSlice({
         setForecastData: (state, action) => {
             state.forecast = action.payload;
         },
+        setUnit: (state, action) => {
+            state.unit = action.payload;
+        },
     }
 });
-export const { setLoading, setLocation, setWeatherData, setNewsArticles, setForecastData } = dashboardSlice.actions;
+export const { setLoading, setLocation, setWeatherData, setNewsArticles, setForecastData, setUnit } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

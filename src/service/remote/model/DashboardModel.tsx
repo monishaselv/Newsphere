@@ -8,12 +8,15 @@ export interface weatherData {
     maxTemp: number;
     icon: string;
     timestamp: number;
+    rainChance: number;
+    windSpeed: number;
 }
 export interface forecastData {
     date: string;
     temperature: number;
     condition: string;
     icon: string;
+    humidity: number;
 }
 export interface newsData {
     title: string;

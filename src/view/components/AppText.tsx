@@ -23,9 +23,19 @@ export const AppTextBold: React.FC<TextProps> = ({ text, styles }) => {
         <Text style={[{ fontSize: 15, fontFamily: 'Inter_Medium' }, styles]}>{text}</Text>
     );
 }
+export const AppTextBolder: React.FC<TextProps> = ({ text, styles }) => {
+    return (
+        <Text style={[{ fontSize: 15, fontFamily: 'Inter_Bold' }, styles]}>{text}</Text>
+    );
+}
 export const AppTextSmall: React.FC<TextProps> = ({ text, styles }) => {
     return (
         <Text style={[{ color: 'black', fontSize: 12, fontFamily: 'Inter_Regular' }, styles]}>{text}</Text>
+    );
+}
+export const AppTextSmallB: React.FC<TextProps> = ({ text, styles }) => {
+    return (
+        <Text style={[{ color: 'black', fontSize: 12, fontFamily: 'Inter_Medium' }, styles]}>{text}</Text>
     );
 }
 export const AppGreySText: React.FC<TextProps> = ({ text, styles }) => {
@@ -40,6 +50,6 @@ export const AppGreyMText: React.FC<TextProps> = ({ text, styles }) => {
 }
 export const AppTextBig: React.FC<TextProps> = ({ text, styles, children }) => {
     return (
-        <Text adjustsFontSizeToFit style={[{ fontSize: 33, fontFamily: 'Inter_Regular', textAlign: 'center' }, styles]}>{text}{children}</Text>
+        <Text style={[{ fontSize: 39, fontFamily: 'Inter_Medium' }, styles]}>{text}{children}</Text>
     );
 }
